@@ -1,6 +1,10 @@
 #include "imgui.h"
 #include "raylib.h"
 #include "rlImGui.h"
+
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
+
 #include <iostream>
 
 int main() {

@@ -8,9 +8,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 include(${PROJECT_SOURCE_DIR}/cmake/CPM.cmake)
 include(${PROJECT_SOURCE_DIR}/dependencies.cmake)
 
-if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
-endif()
+endif ()
 
 option(ENABLE_WARNINGS_AS_ERRORS "Treat warnings as errors" ON)
 option(ENABLE_SANITIZERS "Enable ASan/UBSan (Debug, GCC/Clang)" OFF)
@@ -20,7 +20,7 @@ set(HDRS)
 
 add_executable(keith ${SRCS} ${HDRS})
 target_include_directories(keith
-        PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${SRCS} ${HDRS})
@@ -51,7 +51,7 @@ target_compile_options(project_warnings INTERFACE
         >
 )
 
-target_link_libraries(keith PRIVATE project_warnings raylib imgui rlImGui)
+target_link_libraries(keith PRIVATE project_warnings raylib raygui imgui rlImGui)
 
 target_compile_options(imgui PRIVATE
         $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-w>
@@ -62,22 +62,22 @@ target_compile_options(rlImGui PRIVATE
         $<$<CXX_COMPILER_ID:MSVC>:/w>
 )
 
-if(ENABLE_WARNINGS_AS_ERRORS)
+if (ENABLE_WARNINGS_AS_ERRORS)
     target_compile_options(keith PRIVATE
             $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Werror>
             $<$<CXX_COMPILER_ID:MSVC>:/WX>
     )
-endif()
+endif ()
 
-if(ENABLE_SANITIZERS)
-    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
+if (ENABLE_SANITIZERS)
+    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
         target_compile_options(keith PRIVATE
                 $<$<CONFIG:Debug>:-fsanitize=address,undefined -fno-omit-frame-pointer>)
         target_link_options(keith PRIVATE
                 $<$<CONFIG:Debug>:-fsanitize=address,undefined>)
-    endif()
-endif()
+    endif ()
+endif ()
 
-if(MSVC)
+if (MSVC)
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif()
+endif ()
