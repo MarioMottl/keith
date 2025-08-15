@@ -42,6 +42,6 @@ std::unique_ptr<Scene> PlayScene::update() {
 }
 
 void PlayScene::draw() {
-    DrawText("WASD to move, ESC for Options", 20, 20, 20, RAYWHITE);
+    DrawText("WASD to move, P for Options", 20, 20, 20, RAYWHITE);
     DrawRectangleV({ px, py }, { 32, 32 }, SKYBLUE);
 }
