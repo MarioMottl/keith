@@ -5,38 +5,37 @@
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
-#include <iostream>
-#include <format>
+#include "core/Render.h"
+#include "game/Game.h"
 
-struct Context {
-    int width{1280}, height{720};
-    int target_fps{60};
-};
+#include <format>
+#include <iostream>
+
 
 auto main() -> int {
-    constexpr Context context;
-    InitWindow(context.width, context.width, "raylib Keith");
-    SetTargetFPS(context.target_fps);
-    rlImGuiSetup(true);
+    render::init_window("keith");
+    Game game;
+
+    if (!game.Init())
+        return 1;
 
     while (!WindowShouldClose()) {
-        rlImGuiBegin();
+        game.Update();
 
+        BeginDrawing();
+        ClearBackground(BLACK);
+        game.Draw();
+
+        rlImGuiBegin();
         ImGui::Begin("Example Window");
         ImGui::Text("%s", std::format("FPS: {}", GetFPS()).c_str());
         ImGui::End();
-
-
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawLineEx(Vector2{ 0, 0 }, Vector2{ context.width, context.height}, 2.0f, RED);
-        DrawLineEx(Vector2{ 0, context.height}, Vector2{ context.width, 0 }, 2.0f, RED);
-        DrawText("example base code template", 260, 400, 20, LIGHTGRAY);
         rlImGuiEnd();
+
         EndDrawing();
     }
 
-    rlImGuiShutdown();
-    CloseWindow();
+    game.Shutdown();
+    render::shutdown_window();
     return 0;
 }
