@@ -23,10 +23,13 @@ std::unique_ptr<Scene> PlayScene::update() {
     auto const dt = GetFrameTime();
     auto const dx = static_cast<float>(IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed * dt;
     auto const dy = static_cast<float>(IsKeyDown(KEY_S) - IsKeyDown(KEY_W)) * speed * dt;
-    if (float const length = std::sqrt(dx * dx + dy * dy); length > 0.0f) {
+    if (auto const length = std::sqrt(dx * dx + dy * dy); length > 0.0f) {
         px += dx / length * speed * dt;
     }
     py += dy;
+
+    px = std::max(0.0f, std::min(px, static_cast<float>(GetScreenWidth() - 32)));
+    py = std::max(0.0f, std::min(py, static_cast<float>(GetScreenHeight() - 32)));
 
     std::unique_ptr<Scene> next;
     switch (pending) {
@@ -47,5 +50,13 @@ std::unique_ptr<Scene> PlayScene::update() {
 
 void PlayScene::draw() {
     DrawText("WASD to move, P for Options", 20, 20, 20, RAYWHITE);
+
+    for (int x = 0; x < GetScreenWidth(); x += 32) {
+        DrawLine(x, 0, x, GetScreenHeight(), { 128, 128, 128, 64 });
+    }
+    for (int y = 0; y < GetScreenHeight(); y += 32) {
+        DrawLine(0, y, GetScreenWidth(), y, { 128, 128, 128, 64 });
+    }
+
     DrawRectangleV({ px, py }, { 32, 32 }, SKYBLUE);
 }
