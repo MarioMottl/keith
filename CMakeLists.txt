@@ -15,8 +15,19 @@ endif ()
 option(ENABLE_WARNINGS_AS_ERRORS "Treat warnings as errors" ON)
 option(ENABLE_SANITIZERS "Enable ASan/UBSan (Debug, GCC/Clang)" OFF)
 
-set(SRCS src/main.cpp)
-set(HDRS)
+set(SRCS
+        src/main.cpp
+        src/game/Game.cpp
+        src/game/scenes/TitleScene.cpp
+        src/game/scenes/PlayScene.cpp
+        src/core/Render.cpp
+)
+set(HDRS
+        src/game/Game.h
+        src/game/Scene.h
+        src/game/scenes/TitleScene.h
+        src/game/scenes/PlayScene.h
+        src/core/Render.h)
 
 add_executable(keith ${SRCS} ${HDRS})
 target_include_directories(keith
