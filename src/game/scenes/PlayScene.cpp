@@ -1,6 +1,8 @@
 #include "PlayScene.h"
 #include "OptionsScene.h"
 #include "raylib.h"
+
+#include <cmath>
 #include <memory>
 
 void PlayScene::enter() {
@@ -21,7 +23,9 @@ std::unique_ptr<Scene> PlayScene::update() {
     auto const dt = GetFrameTime();
     auto const dx = static_cast<float>(IsKeyDown(KEY_D) - IsKeyDown(KEY_A)) * speed * dt;
     auto const dy = static_cast<float>(IsKeyDown(KEY_S) - IsKeyDown(KEY_W)) * speed * dt;
-    px += dx;
+    if (float const length = std::sqrt(dx * dx + dy * dy); length > 0.0f) {
+        px += dx / length * speed * dt;
+    }
     py += dy;
 
     std::unique_ptr<Scene> next;
