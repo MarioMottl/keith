@@ -21,13 +21,16 @@ set(SRCS
         src/game/scenes/TitleScene.cpp
         src/game/scenes/PlayScene.cpp
         src/core/Render.cpp
+        src/game/scenes/OptionsScene.cpp
 )
 set(HDRS
         src/game/Game.h
         src/game/Scene.h
         src/game/scenes/TitleScene.h
         src/game/scenes/PlayScene.h
-        src/core/Render.h)
+        src/core/Render.h
+        src/game/scenes/OptionsScene.h
+)
 
 add_executable(keith ${SRCS} ${HDRS})
 target_include_directories(keith

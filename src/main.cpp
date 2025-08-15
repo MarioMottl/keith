@@ -7,6 +7,7 @@
 
 #include "core/Render.h"
 #include "game/Game.h"
+#include "game/scenes/TitleScene.h"
 
 #include <format>
 #include <iostream>
@@ -16,10 +17,10 @@ auto main() -> int {
     render::init_window("keith");
     Game game;
 
-    if (!game.Init())
-        return 1;
+    game.change_scene(std::make_unique<TitleScene>());
+    game.Init();
 
-    while (!WindowShouldClose()) {
+    while (game.IsRunning() && !WindowShouldClose()) {
         game.Update();
 
         BeginDrawing();

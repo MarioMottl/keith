@@ -1,21 +1,22 @@
 #pragma once
-
-#include <memory>
-
 #include "Scene.h"
+#include <memory>
+#include <vector>
 
 class Game {
 public:
-    Game() = default;
     ~Game();
-
-    Game(const Game &) = delete; // copy Constructor
-    Game& operator=(const Game &) = delete; // copy assignment
-
-    bool Init();
+    void Init();
     void Update();
     void Draw();
     void Shutdown();
-    private:
-    std::unique_ptr<Scene> m_scene;
+    void RequestQuit();
+    [[nodiscard]] bool IsRunning() const;
+    void change_scene(std::unique_ptr<Scene> scene);
+
+private:
+    void push_scene(std::unique_ptr<Scene> scene);
+    void pop_scene();
+    bool m_running{ false };
+    std::vector<std::unique_ptr<Scene>> m_scenes;
 };
